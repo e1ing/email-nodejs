@@ -3,11 +3,14 @@ const express = require('express')
 const app = express()
 const cors = require("cors")
 const bodyParser = require('body-parser')
-const port = 3010
+const port = process.env.PORT||3010
 
 app.use (cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+const smtp_login = process.env.SMTP_LOGIN||"---";
+const smtp_password = process.env.SMTP_PASSWORD||"---";
+
 
 // create reusable transporter object using the default SMTP transport
 let transporter = nodemailer.createTransport({
@@ -18,8 +21,8 @@ let transporter = nodemailer.createTransport({
         rejectUnauthorized: false
     },
     auth: {
-        user: "eling.prog@gmail.com", // generated ethereal user
-        pass: "eling01091993", // generated ethereal password
+        user: smtp_login,
+        pass: smtp_password,
     },
 });
 
