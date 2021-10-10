@@ -1,7 +1,13 @@
 const nodemailer = require("nodemailer");
 const express = require('express')
 const app = express()
+const cors = require("cors")
+const bodyParser = require('body-parser')
 const port = 3010
+
+app.use (cors())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 // create reusable transporter object using the default SMTP transport
 let transporter = nodemailer.createTransport({
@@ -18,17 +24,21 @@ let transporter = nodemailer.createTransport({
 });
 
 
-app.get('/sendMessage',async (res) => {
-    console.log("test")
+app.post('/sendMessage',async (req, res) => {
+    let {message, contacts, name} = req.body;
+
     // send mail with defined transport object
     let info = await transporter.sendMail({
-        from: "'Elya message' <eling.prog@gmail.com>", // sender address
-        to: "elvira.kisling@gmail.com", // list of receivers
-        subject: "Hello ✔", // Subject line
-        text: "Hello test?", // plain text body*/
-        // html: "<b>Hello test?</b>", // html body
+        from: "'HR wants me' <eling.prog@gmail.com>",
+        to: "elvira.kisling@gmail.com",
+        subject: "Hello ✔",
+        text: "Hello test?",
+        html: `<b>Сообщение с portfolio</b>
+        <div>${name}</div>
+        <div>${email}</div>
+        <div>${message}</div>`
     });
-    res.send('ddd');
+    res.send(res.body);
 });
 
 app.listen(port, () => {
