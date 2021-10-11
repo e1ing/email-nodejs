@@ -28,7 +28,7 @@ let transporter = nodemailer.createTransport({
 
 
 app.post('/sendMessage',async (req, res) => {
-    let {message, contacts, name} = req.body;
+    let {message, email, name} = req.body;
 
     // send mail with defined transport object
     let info = await transporter.sendMail({
